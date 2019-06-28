@@ -1,0 +1,5 @@
+@(users: Seq[WidgetForm.User], userForm: Form[WidgetForm.User])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@main("Welcome to Play", users, userForm) {
+  <h1>Welcome to Play!</h1>
+}
