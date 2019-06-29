@@ -1,0 +1,64 @@
+@(form: Form[WidgetForm.User])(implicit request: play.api.mvc.Request[Any], messages: Messages)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @helper.javascriptRouter("jsRoutes")(
+        routes.javascript.UserRestController.read,
+        routes.javascript.UserRestController.create
+    )
+
+    <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("lib/knockout/knockout.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("lib/knockout-mapping/knockout.mapping.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("lib/knockout-validation/dist/knockout.validation.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("javascripts/main.js")"></script>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+# html
+<div id="listmodel" data-bind="foreach: users">
+    <div class="panel panel-default">
+        <div class="panel-heading" data-bind="text: firstname"></div>
+        <div class="panel-body" data-bind="text: lastname"></div>
+
+    </div>
+</div>
+
+
+<div id="formmodel" data-model="@JsonConverter.toJsonOne(form.get)">
+    <div class="well">
+      @helper.form(routes.UserRestController.create(), 'class -> "form-horizontal") {
+
+        <fieldset>
+          @if(form.hasErrors) {
+            <p class="alert alert-danger">
+            @form.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
+            </p>
+          }
+          <legend>@Messages("post.new")</legend>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="firstname">@Messages("firstname")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="firstname" name="firstname" type="text" placeholder="@Messages("firstname")">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="lastname">@Messages("lastname")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="lastname" name="lastname" type="text" placeholder="@Messages("lastname")">
+            </div>
+          </div>
+
+          <input type="button" data-bind="click:submit" class="btn btn-primary pull-right" value="@Messages("save")"/>
+        </fieldset>
+      }
+    </div>
+  </div>
+
+</body>
+</html>
